@@ -1,0 +1,43 @@
+{% extends "admin/_layout.html" %}
+
+{% block title %}Заказы{% endblock %}
+{% block heading %}Заказы{% endblock %}
+
+{% block content %}
+<section class="admin-panel">
+  {% if orders %}
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>№</th>
+            <th>Покупатель</th>
+            <th>Телефон</th>
+            <th>Товаров</th>
+            <th>Сумма</th>
+            <th>Статус</th>
+            <th>Дата</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+            <tr>
+              <td>{{ order.id }}</td>
+              <td>{{ order.customer_name }}</td>
+              <td>{{ order.phone }}</td>
+              <td>{{ order.units }}</td>
+              <td>{{ order.total|byn }}</td>
+              <td><span class="badge badge--{{ order.status }}">{{ order.status|status }}</span></td>
+              <td>{{ order.created_at|date }}</td>
+              <td class="cell-actions"><a class="text-link" href="/admin/orders/{{ order.id }}">Открыть</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="empty-note">Заказов пока нет.</p>
+  {% endif %}
+</section>
+{% endblock %}

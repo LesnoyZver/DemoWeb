@@ -1,0 +1,69 @@
+{% extends "admin/_layout.html" %}
+
+{% block title %}Товары{% endblock %}
+{% block heading %}Товары{% endblock %}
+
+{% block topbar_actions %}
+  <a class="btn btn-primary btn-small" href="/admin/products/new">Добавить товар</a>
+{% endblock %}
+
+{% block content %}
+<section class="admin-panel">
+  {% if products %}
+    <div class="table-wrap">
+      <table class="data-table data-table--products">
+        <thead>
+          <tr>
+            <th>Фото</th>
+            <th>Название</th>
+            <th>Категория</th>
+            <th>Цена</th>
+            <th>Статус</th>
+            <th class="cell-actions">Действия</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in products %}
+            <tr>
+              <td>
+                {% if p.image_path %}
+                  <img class="thumb" src="{{ p.image_path }}" alt="{{ p.name }}" loading="lazy">
+                {% else %}
+                  <span class="thumb thumb--empty" aria-hidden="true"></span>
+                {% endif %}
+              </td>
+              <td>
+                <span class="table-title">{{ p.name }}</span>
+                <span class="table-sub">/product/{{ p.slug }}</span>
+              </td>
+              <td>{{ p.category_name }}</td>
+              <td>{{ p.price|byn }}</td>
+              <td>
+                {% if p.is_active %}
+                  <span class="badge badge--done">Опубликован</span>
+                {% else %}
+                  <span class="badge badge--muted">Скрыт</span>
+                {% endif %}
+              </td>
+              <td class="cell-actions">
+                <a class="text-link" href="/admin/products/{{ p.id }}/edit">Редактировать</a>
+                <form method="post" action="/admin/products/{{ p.id }}/toggle">
+                  <button class="btn-link" type="submit">
+                    {% if p.is_active %}Скрыть{% else %}Показать{% endif %}
+                  </button>
+                </form>
+                <form method="post" action="/admin/products/{{ p.id }}/delete"
+                      onsubmit="return confirm('Удалить товар «{{ p.name }}»? Действие необратимо.');">
+                  <button class="btn-link btn-link--muted" type="submit">Удалить</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="empty-note">Товаров пока нет. <a class="text-link" href="/admin/products/new">Добавить первый</a>.</p>
+  {% endif %}
+</section>
+{% endblock %}

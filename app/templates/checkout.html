@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Оформление заказа{% endblock %}
+
+{% block content %}
+<section class="section section--top">
+  <div class="container">
+    <p class="eyebrow">Оформление</p>
+    <h1 class="page-title">Данные доставки</h1>
+
+    {% if errors.cart %}
+      <p class="alert alert--error">{{ errors.cart }}</p>
+    {% endif %}
+
+    <div class="checkout-layout">
+      <form class="checkout-form" method="post" action="/checkout" data-checkout-form novalidate>
+        <input type="hidden" name="items" id="checkout-items" value="">
+
+        <div class="field">
+          <label for="customer_name">Имя и фамилия</label>
+          <input id="customer_name" name="customer_name" type="text" autocomplete="name"
+                 value="{{ values.get('customer_name', '') }}" minlength="2" required>
+          {% if errors.customer_name %}<span class="field-error">{{ errors.customer_name }}</span>{% endif %}
+        </div>
+
+        <div class="field">
+          <label for="phone">Телефон</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel"
+                 placeholder="+375 29 000-00-00"
+                 value="{{ values.get('phone', '') }}" required>
+          {% if errors.phone %}<span class="field-error">{{ errors.phone }}</span>{% endif %}
+        </div>
+
+        <div class="field">
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="email" autocomplete="email"
+                 value="{{ values.get('email', '') }}" required>
+          {% if errors.email %}<span class="field-error">{{ errors.email }}</span>{% endif %}
+        </div>
+
+        <div class="field">
+          <label for="address">Адрес доставки</label>
+          <textarea id="address" name="address" rows="3" autocomplete="street-address"
+                    required>{{ values.get('address', '') }}</textarea>
+          {% if errors.address %}<span class="field-error">{{ errors.address }}</span>{% endif %}
+        </div>
+
+        <button class="btn btn-primary btn-wide" type="submit">Подтвердить заказ</button>
+        <p class="form-note">Оплата не подключена — это демонстрационный заказ.</p>
+      </form>
+
+      <aside class="checkout-summary">
+        <h2 class="summary-title">Ваш заказ</h2>
+        <div id="checkout-summary" data-checkout-summary>
+          <noscript>Для оформления заказа включите JavaScript.</noscript>
+        </div>
+        <div class="summary-total">
+          <span>Итого</span>
+          <span id="checkout-total">0 BYN</span>
+        </div>
+        <a class="text-link" href="/cart">Вернуться в корзину</a>
+      </aside>
+    </div>
+  </div>
+</section>
+{% endblock %}

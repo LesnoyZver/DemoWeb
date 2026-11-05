@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: shop-site
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: DATA_DIR
+        value: /app/data

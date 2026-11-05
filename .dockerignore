@@ -1,0 +1,9 @@
+.git
+.env
+__pycache__
+*.pyc
+.venv
+shop.db
+app/static/uploads/*
+README.md
+data

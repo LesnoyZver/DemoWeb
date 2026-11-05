@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Аксессуары для техники{% endblock %}</title>
+  <meta name="description" content="Сдержанные аксессуары для техники: чехлы, кабели, подставки.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body data-page="{{ page|default('public') }}">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="/" aria-label="{% if SHOP_NAME %}{{ SHOP_NAME }} — на главную{% else %}На главную{% endif %}">{% if SHOP_NAME %}{{ SHOP_NAME }}<span>.</span>{% endif %}</a>
+      <nav class="main-nav" aria-label="Основная навигация">
+        <a href="/catalog">Каталог</a>
+      </nav>
+      <a class="cart-link" href="/cart">
+        Корзина
+        <span class="cart-count" data-cart-count hidden>0</span>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span class="logo logo--small">{% if SHOP_NAME %}{{ SHOP_NAME }}<span>.</span>{% endif %}</span>
+      <p>Аксессуары для техники. Демонстрационный магазин.</p>
+      <span class="footer-year">© 2026</span>
+    </div>
+  </footer>
+
+  <script src="/static/js/app.js" defer></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

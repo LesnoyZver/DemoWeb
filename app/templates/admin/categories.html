@@ -1,0 +1,48 @@
+{% extends "admin/_layout.html" %}
+
+{% block title %}Категории{% endblock %}
+{% block heading %}Категории{% endblock %}
+
+{% block content %}
+{% if error %}
+  <p class="alert alert--error">{{ error }}</p>
+{% endif %}
+
+<section class="admin-panel">
+  <div class="admin-panel__head">
+    <h2>Новая категория</h2>
+  </div>
+  <form class="inline-form" method="post" action="/admin/categories">
+    <div class="field field--inline">
+      <label class="sr-only" for="new-category">Название категории</label>
+      <input id="new-category" name="name" type="text" placeholder="Название категории" required>
+    </div>
+    <button class="btn btn-primary btn-small" type="submit">Добавить</button>
+  </form>
+</section>
+
+<section class="admin-panel">
+  <div class="admin-panel__head">
+    <h2>Все категории</h2>
+  </div>
+
+  {% if categories %}
+    <ul class="category-list">
+      {% for c in categories %}
+        <li class="category-row">
+          <form class="inline-form inline-form--grow" method="post" action="/admin/categories/{{ c.id }}/rename">
+            <div class="field field--inline">
+              <label class="sr-only" for="category-{{ c.id }}">Название категории {{ c.name }}</label>
+              <input id="category-{{ c.id }}" name="name" type="text" value="{{ c.name }}" required>
+            </div>
+            <button class="btn btn-ghost btn-small" type="submit">Сохранить</button>
+          </form>
+          <span class="table-sub">Товаров: {{ c.product_count }} · /{{ c.slug }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="empty-note">Категорий пока нет.</p>
+  {% endif %}
+</section>
+{% endblock %}

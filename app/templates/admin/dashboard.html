@@ -1,0 +1,63 @@
+{% extends "admin/_layout.html" %}
+
+{% block title %}Дашборд{% endblock %}
+{% block heading %}Дашборд{% endblock %}
+
+{% block content %}
+<div class="stat-grid">
+  <div class="stat-card">
+    <span class="stat-label">Всего товаров</span>
+    <strong class="stat-value">{{ products_count }}</strong>
+    <span class="stat-note">Опубликовано: {{ active_count }}</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Новые заказы</span>
+    <strong class="stat-value">{{ new_orders }}</strong>
+    <span class="stat-note">Со статусом «Новый»</span>
+  </div>
+  <div class="stat-card stat-card--action">
+    <span class="stat-label">Быстрое действие</span>
+    <a class="btn btn-primary btn-small" href="/admin/products/new">Добавить товар</a>
+  </div>
+</div>
+
+<section class="admin-panel">
+  <div class="admin-panel__head">
+    <h2>Последние заказы</h2>
+    <a class="text-link" href="/admin/orders">Все заказы</a>
+  </div>
+
+  {% if latest_orders %}
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>№</th>
+            <th>Покупатель</th>
+            <th>Товаров</th>
+            <th>Сумма</th>
+            <th>Статус</th>
+            <th>Дата</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in latest_orders %}
+            <tr>
+              <td>{{ order.id }}</td>
+              <td>{{ order.customer_name }}</td>
+              <td>{{ order.units }}</td>
+              <td>{{ order.total|byn }}</td>
+              <td><span class="badge badge--{{ order.status }}">{{ order.status|status }}</span></td>
+              <td>{{ order.created_at|date }}</td>
+              <td class="cell-actions"><a class="text-link" href="/admin/orders/{{ order.id }}">Открыть</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="empty-note">Заказов пока нет.</p>
+  {% endif %}
+</section>
+{% endblock %}

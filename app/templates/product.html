@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<section class="section section--top">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+      <a href="/catalog">Каталог</a>
+      <span>/</span>
+      <a href="/catalog?sort=new&category={{ product.category_slug }}">{{ product.category_name }}</a>
+      <span>/</span>
+      <span aria-current="page">{{ product.name }}</span>
+    </nav>
+
+    <div class="product-detail">
+      <div class="product-detail__media">
+        {% if product.image_path %}
+          <img src="{{ product.image_path }}" alt="{{ product.name }}">
+        {% else %}
+          <div class="product-card__placeholder" aria-hidden="true"></div>
+        {% endif %}
+      </div>
+
+      <div class="product-detail__info">
+        <p class="eyebrow">{{ product.category_name }}</p>
+        <h1 class="product-detail__title">{{ product.name }}</h1>
+        <p class="product-detail__price">{{ product.price|byn }}</p>
+        <p class="product-detail__description">{{ product.description }}</p>
+
+        <button
+          class="btn btn-primary btn-wide"
+          type="button"
+          data-add-to-cart
+          data-id="{{ product.id }}"
+          data-name="{{ product.name }}"
+          data-price="{{ product.price }}"
+          data-image="{{ product.image_path or '' }}"
+          data-slug="{{ product.slug }}"
+        >В корзину</button>
+
+        <p class="product-detail__note">Демонстрационный магазин. Оплата не подключена.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

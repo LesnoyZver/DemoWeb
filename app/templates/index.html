@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Аксессуары для техники{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="container hero-inner">
+    <p class="eyebrow">Аксессуары для техники</p>
+    <h1 class="hero-title">Порядок<br>в деталях.</h1>
+    <p class="hero-text">
+      Чехлы, кабели и подставки без лишнего шума. Спокойные формы,
+      честные материалы и ничего, что отвлекало бы от дела.
+    </p>
+    <a class="btn btn-primary" href="/catalog">Смотреть каталог</a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Новинки</h2>
+      <a class="text-link" href="/catalog">Весь каталог</a>
+    </div>
+
+    {% if products %}
+      <div class="product-grid product-grid--four">
+        {% for p in products %}
+          {% include "_product_card.html" %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="empty-note">Каталог пока пуст.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

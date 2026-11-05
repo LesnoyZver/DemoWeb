@@ -1,0 +1,13 @@
+<a class="product-card" href="/product/{{ p.slug }}">
+  <div class="product-card__media">
+    {% if p.image_path %}
+      <img src="{{ p.image_path }}" alt="{{ p.name }}" loading="lazy">
+    {% else %}
+      <div class="product-card__placeholder" aria-hidden="true"></div>
+    {% endif %}
+  </div>
+  <div class="product-card__meta">
+    <h3 class="product-card__name">{{ p.name }}</h3>
+    <span class="price">{{ p.price|byn }}</span>
+  </div>
+</a>

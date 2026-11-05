@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Заказ принят{% endblock %}
+
+{% block content %}
+<section class="section section--top">
+  <div class="container container--narrow">
+    <p class="eyebrow">Готово</p>
+    <h1 class="page-title">Заказ принят</h1>
+    <p class="lead">
+      Спасибо, {{ order.customer_name }}! Мы получили заказ
+      <strong>№{{ order.id }}</strong> и свяжемся с вами по телефону
+      {{ order.phone }}.
+    </p>
+
+    <div class="success-card">
+      <div class="success-card__row">
+        <span>Статус</span>
+        <span class="badge badge--{{ order.status }}">{{ order.status|status }}</span>
+      </div>
+      <div class="success-card__row">
+        <span>Дата</span>
+        <span>{{ order.created_at|date }}</span>
+      </div>
+      <div class="success-card__row">
+        <span>Адрес</span>
+        <span>{{ order.address }}</span>
+      </div>
+
+      <ul class="success-items">
+        {% for item in items %}
+          <li class="success-item">
+            <span>{{ item.name or 'Товар удалён' }} × {{ item.qty }}</span>
+            <span>{{ (item.price * item.qty)|byn }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <div class="success-total">
+        <span>Итого</span>
+        <span>{{ order.total|byn }}</span>
+      </div>
+    </div>
+
+    <a class="btn btn-primary" href="/catalog">Продолжить покупки</a>
+  </div>
+</section>
+{% endblock %}

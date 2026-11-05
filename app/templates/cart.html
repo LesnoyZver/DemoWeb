@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+<section class="section section--top">
+  <div class="container container--narrow">
+    <p class="eyebrow">Корзина</p>
+    <h1 class="page-title">Ваш выбор</h1>
+
+    <div id="cart-root" data-cart-page>
+      <noscript>Для работы корзины включите JavaScript.</noscript>
+    </div>
+  </div>
+</section>
+{% endblock %}

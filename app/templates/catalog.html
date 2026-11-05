@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Каталог{% endblock %}
+
+{% block content %}
+<section class="section section--top">
+  <div class="container">
+    <div class="catalog-head">
+      <div>
+        <p class="eyebrow">Каталог</p>
+        <h1 class="page-title">
+          {% if current_category %}{{ current_category.name }}{% else %}Все товары{% endif %}
+        </h1>
+      </div>
+      <p class="catalog-count">Показано: {{ products|length }}</p>
+    </div>
+
+    <div class="catalog-controls">
+      <div class="filter-tabs" role="navigation" aria-label="Категории">
+        <a class="filter-tab {% if not current_category %}is-active{% endif %}"
+           href="/catalog?sort={{ sort }}">Все</a>
+        {% for c in categories %}
+          <a class="filter-tab {% if current_category and current_category.slug == c.slug %}is-active{% endif %}"
+             href="/catalog?sort={{ sort }}&category={{ c.slug }}">{{ c.name }}</a>
+        {% endfor %}
+      </div>
+
+      <form class="sort-form" method="get" action="/catalog">
+        {% if current_category %}
+          <input type="hidden" name="category" value="{{ current_category.slug }}">
+        {% endif %}
+        <label class="sort-label" for="sort">Сортировка</label>
+        <select id="sort" name="sort" onchange="this.form.submit()">
+          <option value="new" {% if sort == 'new' %}selected{% endif %}>Сначала новые</option>
+          <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>Цена: по возрастанию</option>
+          <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>Цена: по убыванию</option>
+        </select>
+        <noscript><button class="btn btn-small" type="submit">Применить</button></noscript>
+      </form>
+    </div>
+
+    {% if products %}
+      <div class="product-grid">
+        {% for p in products %}
+          {% include "_product_card.html" %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="empty-note">В этой категории пока нет товаров.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "admin/_layout.html" %}
+
+{% set is_edit = product is not none %}
+
+{% block title %}{% if is_edit %}Редактирование товара{% else %}Новый товар{% endif %}{% endblock %}
+{% block heading %}{% if is_edit %}Редактировать товар{% else %}Новый товар{% endif %}{% endblock %}
+
+{% block topbar_actions %}
+  <a class="btn btn-ghost btn-small" href="/admin/products">← К списку</a>
+{% endblock %}
+
+{% block content %}
+<section class="admin-panel admin-panel--form">
+  <form class="admin-form" method="post"
+        action="{% if is_edit %}/admin/products/{{ product.id }}/edit{% else %}/admin/products/new{% endif %}"
+        enctype="multipart/form-data" novalidate>
+
+    <div class="form-grid">
+      <div class="form-col">
+        <div class="field">
+          <label for="name">Название</label>
+          <input id="name" name="name" type="text" value="{{ form.name }}" required>
+          {% if errors.name %}<span class="field-error">{{ errors.name }}</span>{% endif %}
+        </div>
+
+        <div class="field">
+          <label for="category_id">Категория</label>
+          <select id="category_id" name="category_id" required>
+            <option value="" {% if not form.category_id %}selected{% endif %} disabled>Выберите категорию</option>
+            {% for c in categories %}
+              <option value="{{ c.id }}" {% if form.category_id|string == c.id|string %}selected{% endif %}>{{ c.name }}</option>
+            {% endfor %}
+          </select>
+          {% if errors.category_id %}<span class="field-error">{{ errors.category_id }}</span>{% endif %}
+        </div>
+
+        <div class="field">
+          <label for="price">Цена, BYN</label>
+          <input id="price" name="price" type="text" inputmode="numeric" value="{{ form.price }}"
+                 placeholder="79" required>
+          {% if errors.price %}<span class="field-error">{{ errors.price }}</span>{% endif %}
+        </div>
+
+        <div class="field">
+          <label for="description">Описание</label>
+          <textarea id="description" name="description" rows="5">{{ form.description }}</textarea>
+          {% if errors.description %}<span class="field-error">{{ errors.description }}</span>{% endif %}
+        </div>
+
+        <label class="check">
+          <input type="checkbox" name="is_active" {% if form.is_active %}checked{% endif %}>
+          <span>Опубликовать на сайте</span>
+        </label>
+      </div>
+
+      <div class="form-col">
+        <div class="field">
+          <label for="image">Изображение</label>
+          <input id="image" name="image" type="file"
+                 accept="image/jpeg,image/png,image/webp" data-image-input>
+          <span class="field-hint">JPG, PNG или WEBP, до 3 МБ. Квадратное изображение выглядит лучше всего.</span>
+          {% if errors.image %}<span class="field-error">{{ errors.image }}</span>{% endif %}
+        </div>
+
+        <div class="image-preview" data-image-preview-wrap>
+          <img data-image-preview
+               src="{{ product.image_path if is_edit and product.image_path else '' }}"
+               alt="Предпросмотр изображения"
+               {% if not (is_edit and product.image_path) %}hidden{% endif %}>
+          <span class="image-preview__empty" data-image-placeholder {% if is_edit and product.image_path %}hidden{% endif %}>
+            Предпросмотр появится после выбора файла
+          </span>
+        </div>
+        <p class="field-error" data-image-error hidden></p>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-primary" type="submit">{% if is_edit %}Сохранить{% else %}Создать товар{% endif %}</button>
+      <a class="btn btn-ghost" href="/admin/products">Отмена</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

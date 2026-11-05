@@ -1,0 +1,76 @@
+{% extends "admin/_layout.html" %}
+
+{% block title %}Заказ №{{ order.id }}{% endblock %}
+{% block heading %}Заказ №{{ order.id }}{% endblock %}
+
+{% block topbar_actions %}
+  <a class="btn btn-ghost btn-small" href="/admin/orders">← К списку</a>
+{% endblock %}
+
+{% block content %}
+<div class="order-layout">
+  <section class="admin-panel">
+    <div class="admin-panel__head">
+      <h2>Состав заказа</h2>
+      <span class="badge badge--{{ order.status }}">{{ order.status|status }}</span>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Товар</th>
+            <th>Цена</th>
+            <th>Кол-во</th>
+            <th>Сумма</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+            <tr>
+              <td>{{ item.name or 'Товар удалён' }}</td>
+              <td>{{ item.price|byn }}</td>
+              <td>{{ item.qty }}</td>
+              <td>{{ (item.price * item.qty)|byn }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="3">Итого</th>
+            <th>{{ order.total|byn }}</th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </section>
+
+  <aside class="order-side">
+    <section class="admin-panel">
+      <div class="admin-panel__head"><h2>Покупатель</h2></div>
+      <dl class="meta-list">
+        <div><dt>Имя</dt><dd>{{ order.customer_name }}</dd></div>
+        <div><dt>Телефон</dt><dd><a class="text-link" href="tel:{{ order.phone }}">{{ order.phone }}</a></dd></div>
+        <div><dt>E-mail</dt><dd><a class="text-link" href="mailto:{{ order.email }}">{{ order.email }}</a></dd></div>
+        <div><dt>Адрес</dt><dd>{{ order.address }}</dd></div>
+        <div><dt>Дата</dt><dd>{{ order.created_at|date }}</dd></div>
+      </dl>
+    </section>
+
+    <section class="admin-panel">
+      <div class="admin-panel__head"><h2>Статус</h2></div>
+      <form class="status-form" method="post" action="/admin/orders/{{ order.id }}/status">
+        <div class="field">
+          <label class="sr-only" for="status">Статус заказа</label>
+          <select id="status" name="status">
+            {% for s in statuses %}
+              <option value="{{ s }}" {% if order.status == s %}selected{% endif %}>{{ s|status }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button class="btn btn-primary btn-small" type="submit">Обновить</button>
+      </form>
+    </section>
+  </aside>
+</div>
+{% endblock %}

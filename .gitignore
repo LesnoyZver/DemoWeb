@@ -1,0 +1,8 @@
+.venv/
+.env
+shop.db
+data/
+__pycache__/
+*.pyc
+app/static/uploads/*
+!app/static/uploads/.gitkeep
